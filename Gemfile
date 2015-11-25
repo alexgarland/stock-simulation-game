@@ -37,6 +37,7 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
+  gem 'byebug', '~> 6.0.2'
 end
 
 group :development do

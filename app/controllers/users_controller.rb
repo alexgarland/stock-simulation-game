@@ -3,9 +3,12 @@ class UsersController < ApplicationController
     @user = User.new
   end
   def create
-    @user = User.new(user_params)
+    @user = User.create(user_params)
     if @user.save
-
+      #Handle a save
+      #TODO fix the flash so that it will actually flash a success on registering
+      flash[:success] = "Welcome to Stocks on Rails!"
+      redirect_to root_path
     else
       render 'new'
     end
