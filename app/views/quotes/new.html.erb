@@ -1,9 +1,9 @@
-<% @title="Quote" %>
+<% @title = "Quotes" %>
 <br>
-<div class = "col-xs-2">
+<div class="col-xs-2">
   <%= form_tag do %>
-      <%= text_field_tag :symbol, "", class: 'form-control', :placeholder => 'Stock Symbol' %>
+      <%= text_field :symbol, "", class: 'form-control', placeholder: 'Stock Symbol' %>
       <br>
-      <%= submit_tag("Log in", class: "btn btn-primary") %>
+      <%= submit_tag "Get Quote", class: "btn btn-primary" %>
   <% end %>
 </div>
