@@ -1,15 +1,29 @@
 <!-- app/views/shared/_navigation.html.erb -->
 <%= image_tag("logo.png") %>
-<div id = "top-nav">
-  <nav class="nav nav-pills" role="navigation">
-    <div class="container">
-      <ul class = "nav nav-pills">
-        <li role = "presentation"><%= link_to "Home", root_path %></li>
-        <li role = "presentation"><%= link_to "Quote", root_path %></li>
-        <li role = "presentation"><%= link_to "Buy", root_path %></li>
-        <li role = "presentation"><%= link_to "Sell", root_path %></li>
-        <li role = "presentation"><%= link_to "Sign Up", signup_path %></li>
+<% if logged_in? %>
+  <div id = "top-nav">
+    <nav class="nav nav-pills" role="navigation">
+      <div class="container">
+        <ul class = "nav nav-pills">
+          <li role = "presentation"><%= link_to "Home", root_path %></li>
+          <li role = "presentation"><%= link_to "Quote", root_path %></li>
+          <li role = "presentation"><%= link_to "Buy", root_path %></li>
+          <li role = "presentation"><%= link_to "Sell", root_path %></li>
+          <li role = "presentation"><%= link_to "Log Out", logout_path, method: :delete %></li>
+          </ul>
+      </div>
+    </nav>
+  </div>
+<% else %>
+  <div id = "top-nav">
+    <nav class="nav nav-pills" role="navigation">
+      <div class="container">
+        <ul class = "nav nav-pills">
+          <li role = "presentation"><%= link_to "Home", root_path %></li>
+          <li role = "presentation"><%= link_to "Sign Up", signup_path %></li>
+          <li role = "presentation"><%= link_to "Log In", login_path %></li>
         </ul>
-    </div>
-  </nav>
-</div>
+      </div>
+    </nav>
+  </div>
+<% end %>
