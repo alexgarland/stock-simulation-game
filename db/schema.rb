@@ -11,14 +11,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151124170305) do
+ActiveRecord::Schema.define(version: 20151202184436) do
+
+  create_table "portfolios", force: :cascade do |t|
+    t.string   "symbol"
+    t.string   "type"
+    t.decimal  "number"
+    t.decimal  "price"
+    t.decimal  "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "transactions", force: :cascade do |t|
+    t.string   "symbol"
+    t.decimal  "cost"
+    t.string   "time"
+    t.decimal  "shares"
+    t.decimal  "price"
+    t.integer  "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "username"
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.decimal  "cash",            default: 500000.0
+    t.decimal  "net_worth"
   end
 
 end
