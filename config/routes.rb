@@ -7,5 +7,8 @@ Rails.application.routes.draw do
   delete 'logout' => 'sessions#destroy'
   get 'quotes' => 'quotes#new'
   post 'quotes' => 'quotes#get_quote'
+  get 'transact' => 'transact#new'
+  post 'transact' => 'transact#perform'
   resource :users
+
 end

@@ -15,10 +15,11 @@ ActiveRecord::Schema.define(version: 20151202184436) do
 
   create_table "portfolios", force: :cascade do |t|
     t.string   "symbol"
-    t.string   "type"
+    t.string   "asset_type"
     t.decimal  "number"
     t.decimal  "price"
     t.decimal  "value"
+    t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -26,7 +27,7 @@ ActiveRecord::Schema.define(version: 20151202184436) do
   create_table "transactions", force: :cascade do |t|
     t.string   "symbol"
     t.decimal  "cost"
-    t.string   "time"
+    t.string   "asset_type"
     t.decimal  "shares"
     t.decimal  "price"
     t.integer  "user_id"

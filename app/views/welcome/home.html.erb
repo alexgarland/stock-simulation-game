@@ -1,2 +1,30 @@
 <% @title="Home" %>
-<p>Find me in app/views/welcome/home.html.erb</p>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Symbol</th>
+      <th>Type</th>
+      <th>Number</th>
+      <th>Price</th>
+      <th>Value</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @current_portfolio.each do |current_asset|%>
+    <tr>
+      <td><%= current_asset.symbol %></td>
+      <td><%= current_asset.asset_type %></td>
+      <td><%= current_asset.number %></td>
+      <td><%= current_asset.price %></td>
+      <td><%= current_asset.value %></td>
+    </tr>
+  <% end %>
+    <tr>
+      <td>Cash</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td><%= @cash %></td>
+    </tr>
+  </tbody>
+</table>
