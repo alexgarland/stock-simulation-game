@@ -49,4 +49,5 @@ group :development do
 end
 
 gem 'yahoo-finance'
-
+gem 'options_library'
+gem 'chartkick'
