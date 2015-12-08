@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 20151202184436) do
     t.datetime "updated_at",                         null: false
     t.decimal  "cash",            default: 500000.0
     t.decimal  "net_worth"
+    t.decimal  "debt"
   end
 
 end

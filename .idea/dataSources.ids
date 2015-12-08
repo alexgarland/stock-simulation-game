@@ -3,4 +3,10 @@
   <data-source name="Rails workspace: development" uuid="fee9a24f-476c-4a19-89a5-abd9352a2fe1">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
   </data-source>
+  <data-source name="Rails workspace: production" uuid="0ac83d48-7ac2-466b-8153-333232efcc6e">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source name="Rails workspace: test" uuid="3ca82872-425e-4df8-9c51-df26424670ed">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
 </component>
