@@ -1,2 +1,5 @@
 <% @title = "Quotes" %>
 <%= "The value of " + @stock_symbol[0] + " is $"+  @data[0].last_trade_price %>
+<%= line_chart @historical_data.map{|day|
+      [day.trade_date, day.close]
+    }, min: nil %>

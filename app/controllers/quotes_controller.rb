@@ -9,6 +9,7 @@ class QuotesController < ApplicationController
     yahoo_client = YahooFinance::Client.new
     @stock_symbol = params[:symbol]
     @data = yahoo_client.quotes(params[:symbol], [:last_trade_price])
+    @historical_data = yahoo_client.historical_quotes(@stock_symbol[0], {raw: false, start_date: Date.today - 365, end_date: Date.today})
   end
 end
 
