@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post 'quotes' => 'quotes#get_quote'
   get 'transact' => 'transact#new'
   post 'transact' => 'transact#perform'
+  get 'history' => 'history#new'
   resource :users
 
 end

@@ -1,0 +1,25 @@
+<% @title="History" %>
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Symbol</th>
+    <th>Type</th>
+    <th>Number</th>
+    <th>Price</th>
+    <th>Value</th>
+    <th>Date and Time</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @transaction.each do |transact|%>
+      <tr>
+        <td><%= transact.symbol %></td>
+        <td><%= transact.asset_type %></td>
+        <td><%= transact.shares %></td>
+        <td><%= transact.price %></td>
+        <td><%= transact.cost %></td>
+        <td><%= transact.created_at %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
