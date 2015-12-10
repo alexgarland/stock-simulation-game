@@ -1,3 +1,3 @@
 class Transaction < ActiveRecord::Base
-  validates :symbol, presence: true, uniqueness: true
+  validates :symbol, presence: true
 end

@@ -3,7 +3,7 @@ class HistoryController < ApplicationController
     if !logged_in?
       redirect_to login_path
     else
-      @transaction = Transaction.where("user_id = ?", current_user.id)
+      @hist_transaction = Transaction.where("user_id = ?", current_user.id)
     end
   end
 end

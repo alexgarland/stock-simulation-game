@@ -35,6 +35,7 @@ class TransactController < ApplicationController
     @transaction = Transaction.create(symbol: stock_symbol, cost: asset_cost,
                                       asset_type: params[:asset_type], price: asset_price,
                                       shares: amount.to_i, user_id: current_user.id)
+    @transaction.save
     redirect_to root_path
   end
 end

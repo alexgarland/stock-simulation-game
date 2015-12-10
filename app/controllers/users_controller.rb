@@ -7,8 +7,6 @@ class UsersController < ApplicationController
     if @user.save
       #Handle a save
       log_in @user
-      #TODO fix the flash so that it will actually flash a success on registering
-      flash[:success] = "Welcome to Stocks on Rails!"
       redirect_to root_path
     else
       render 'new'
