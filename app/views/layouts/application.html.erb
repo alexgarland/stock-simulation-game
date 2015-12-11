@@ -7,10 +7,13 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<div id = "top">
+  <%= render 'shared/nav' %>
+</div>
 
-<%= render 'shared/nav' %>
-
-<%= yield %>
+<div id = "middle" class = "col-md-12 text-center">
+  <%= yield %>
+</div>
 
 </body>
 </html>
