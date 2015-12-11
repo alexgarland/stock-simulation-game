@@ -6,36 +6,59 @@ class TransactController < ApplicationController
   end
 
   def perform
-    yahoo = YahooFinance::Client.new
-    @data = yahoo.quotes(params[:symbol], [:last_trade_price])
-    stock_symbol = params[:symbol][0]
-    asset_price = @data[0].last_trade_price
-    amount = params[:amount][0]
-    asset_cost = asset_price.to_f * amount.to_f
-    user_cash = current_user.cash
-    previous_holdings = Portfolio.where("user_id = ? AND symbol = ?", current_user.id, stock_symbol)
-    if previous_holdings.blank?
-      @asset = Portfolio.create(symbol: stock_symbol, value: asset_cost, asset_type: params[:asset_type],
-                                price: asset_price, user_id: current_user.id, number: amount)
-    else
-      @asset = Portfolio.where("user_id = ? AND symbol = ?", current_user.id, stock_symbol).take
-      prev_amount = @asset.number
-      prev_value = @asset.value
-      if (prev_amount.to_f + amount.to_f == 0)
-        @asset.destroy
+    begin
+      yahoo = YahooFinance::Client.new
+      @data = yahoo.quotes(params[:symbol], [:last_trade_price])
+      stock_symbol = params[:symbol][0]
+      @historical_data = yahoo.historical_quotes(stock_symbol, {raw: false, start_date: Date.today - 365, end_date: Date.today})
+      asset_price = @data[0].last_trade_price
+      amount = params[:amount][0]
+      asset_cost = asset_price.to_f * amount.to_f
+      user_cash = current_user.cash
+      transaction_type = params[:asset_type]
+
+      if (amount.to_f > 0)
+        transaction_type = transaction_type + " Buy"
       else
-        @asset.update(number: prev_amount.to_f + amount.to_f)
-        @asset.update(value: prev_value.to_f + asset_cost.to_f, price: asset_price)
+        transaction_type = transaction_type + " Sell"
       end
 
-    end
+      previous_holdings = Portfolio.where("user_id = ? AND symbol = ?", current_user.id, stock_symbol)
+      if previous_holdings.blank?
+        @asset = Portfolio.create(symbol: stock_symbol, value: asset_cost, asset_type: params[:asset_type],
+                                  price: asset_price, user_id: current_user.id, number: amount)
+        if(amount.to_f > 0)
+          @asset.update(asset_type: params[:asset_type] + " (Long)")
+        else
+          @asset.update(asset_type: params[:asset_type] + " (Short)")
+        end
+      else
+        @asset = Portfolio.where("user_id = ? AND symbol = ?", current_user.id, stock_symbol).take
+        prev_amount = @asset.number
+        prev_value = @asset.value
+        if (prev_amount.to_f + amount.to_f == 0)
+          @asset.destroy
+        else
+          @asset.update(number: prev_amount.to_f + amount.to_f)
+          @asset.update(value: prev_value.to_f + asset_cost.to_f, price: asset_price)
+          if(prev_amount.to_f + amount.to_f > 0)
+            @asset.update(asset_type: params[:asset_type] + " (Long)")
+          else
+            @asset.update(asset_type: params[:asset_type] + " (Short)")
+          end
+        end
 
-    current_user.cash = user_cash.to_f - asset_cost.to_f
-    User.where(:id => current_user.id).update_all(:cash => user_cash.to_f - asset_cost.to_f)
-    @transaction = Transaction.create(symbol: stock_symbol, cost: asset_cost,
-                                      asset_type: params[:asset_type], price: asset_price,
-                                      shares: amount.to_i, user_id: current_user.id)
-    @transaction.save
-    redirect_to root_path
+      end
+
+      current_user.cash = user_cash.to_f - asset_cost.to_f
+      User.where(:id => current_user.id).update_all(:cash => user_cash.to_f - asset_cost.to_f)
+      @transaction = Transaction.create(symbol: stock_symbol, cost: asset_cost,
+                                        asset_type: transaction_type, price: asset_price,
+                                        shares: amount.to_i, user_id: current_user.id)
+      @transaction.save
+      redirect_to root_path
+    rescue OpenURI::HTTPError
+      redirect_to error_path
+    end
   end
 end

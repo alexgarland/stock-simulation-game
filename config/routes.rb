@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   get 'transact' => 'transact#new'
   post 'transact' => 'transact#perform'
   get 'history' => 'history#new'
+  get 'error' => 'quotes#quote_error'
   resource :users
 
 end
