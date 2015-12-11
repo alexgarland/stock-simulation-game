@@ -19,11 +19,13 @@ class OptionAssetsController < ApplicationController
       user_cash = current_user.cash
       transaction_type = params[:asset_type]
 
+      #get Treasury yield curve
       Quandl::ApiConfig.api_key = 'vgSUVfxH3nTR8sC4p1cN'
       Quandl::ApiConfig.api_version = '2015-04-09'
       treasury_yield = Quandl::Dataset.get('USTREASURY/YIELD').data
       @yield_num = treasury_yield[0]["2_yr"] * 0.01
 
+      #build array we will get the standard deviation for volatility from
       arr = Array.new
 
       @historical_data.each do |i|
@@ -42,6 +44,7 @@ class OptionAssetsController < ApplicationController
         @option_cost = Option::Calculator.price_put( @data[0].last_trade_price.to_f, strike, duration, @yield_num, @daily_sd, 0.0 )
       end
 
+      #if there is not enough money, give away an error
       if (user_cash.to_f - @option_cost * amount < 0)
         redirect_to error_path
         return
