@@ -3,6 +3,7 @@ class WelcomeController < ApplicationController
     if !logged_in?
       redirect_to login_path
     else
+      #Update user's stats and store them in instance variables we can use in the the view.
       @cash = @current_user.cash
       @net_worth = @cash
       @current_portfolio = Portfolio.where("user_id = ?", @current_user.id)

@@ -51,3 +51,4 @@ end
 gem 'yahoo-finance'
 gem 'options_library'
 gem 'chartkick'
+gem 'treasury_bond_yield'
