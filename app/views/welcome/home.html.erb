@@ -5,7 +5,7 @@
       <th class="text-center">Symbol</th>
       <th class="text-center">Type</th>
       <th class="text-center">Number</th>
-      <th class="text-center">Price</th>
+      <th class="text-center">Price or Strike Price</th>
       <th class="text-center">Value</th>
     </tr>
   </thead>
@@ -18,6 +18,15 @@
       <td><%= current_asset.price %></td>
       <td><%= current_asset.value %></td>
     </tr>
+  <% end %>
+  <% @current_options.each do |current_asset|%>
+      <tr>
+        <td><%= current_asset.symbol %></td>
+        <td><%= current_asset.asset_type %></td>
+        <td><%= current_asset.number %></td>
+        <td><%= current_asset.strike_price %></td>
+        <td><%= current_asset.value %></td>
+      </tr>
   <% end %>
     <tr>
       <td>Cash</td>

@@ -42,6 +42,11 @@ class OptionAssetsController < ApplicationController
         @option_cost = Option::Calculator.price_put( @data[0].last_trade_price.to_f, strike, duration, @yield_num, @daily_sd, 0.0 )
       end
 
+      if (user_cash.to_f - @option_cost * amount < 0)
+        redirect_to error_path
+        return
+      end
+
       User.where(:id => current_user.id).update_all(:cash => user_cash.to_f - @option_cost * amount)
 
       @transaction = Transaction.create(symbol: stock_symbol, cost: @option_cost*amount,
@@ -49,7 +54,7 @@ class OptionAssetsController < ApplicationController
                                         shares: amount.to_i, user_id: current_user.id)
 
       @option_asset = OptionAsset.create(symbol: stock_symbol, asset_type: transaction_type,
-                                         spot_price: strike, user_id: current_user.id, number: amount)
+                                         strike_price: strike, user_id: current_user.id, number: amount)
 
       #Return to index upon success
       redirect_to root_path

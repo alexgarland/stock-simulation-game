@@ -19,6 +19,10 @@ class TransactController < ApplicationController
       asset_cost = asset_price.to_f * amount.to_f
       user_cash = current_user.cash
       transaction_type = params[:asset_type]
+      if (user_cash.to_f - asset_cost.to_f < 0)
+        redirect_to error_path
+        return
+      end
 
       #If no amount specified, return the error page.
       if (amount == "")
@@ -63,7 +67,6 @@ class TransactController < ApplicationController
         end
 
         #Update users cash and then add to this transaction.
-        current_user.cash = user_cash.to_f - asset_cost.to_f
         User.where(:id => current_user.id).update_all(:cash => user_cash.to_f - asset_cost.to_f)
         @transaction = Transaction.create(symbol: stock_symbol, cost: asset_cost,
                                           asset_type: transaction_type, price: asset_price,

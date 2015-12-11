@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20151211071830) do
     t.decimal  "number"
     t.decimal  "strike_price"
     t.decimal  "value"
+    t.decimal  "duration"
     t.integer  "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
