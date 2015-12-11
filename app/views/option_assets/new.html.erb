@@ -1,0 +1,22 @@
+<% @title = "Options" %>
+<br>
+<p>So you want to buy an option, huh?</p>
+<p>Before you do that, I need a little extra information.</p>
+<br>
+<div class="col-sm-offset-5 col-sm-2">
+  <%= form_tag do %>
+      <%= text_field :symbol, "", class: 'form-control', placeholder: 'Stock Symbol' %>
+      <br>
+      <%= number_field :amount, "", class: 'form-control', placeholder:'Amount' %>
+      <br>
+      <%= number_field :duration, "", class: 'form-control', placeholder:'Duration' %>
+      <br>
+      <%= number_field :strike, "", class: 'form-control', placeholder:'Strike Price' %>
+      <br>
+      <%= select_tag :asset_type, "<option>Call</option><option>Put</option>".html_safe,
+                     class: 'form-control'%>
+      <br>
+      <%= submit_tag "Complete Transaction", class: "btn btn-primary" %>
+
+  <% end %>
+</div>

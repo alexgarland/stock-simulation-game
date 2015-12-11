@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   post 'transact' => 'transact#perform'
   get 'history' => 'history#new'
   get 'error' => 'quotes#quote_error'
+  get 'options' => 'option_assets#new'
+  post 'options' => 'option_assets#perform'
   resource :users
 
 end

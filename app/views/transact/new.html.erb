@@ -6,7 +6,7 @@
       <br>
       <%= number_field :amount, "", class: 'form-control', placeholder:'Amount' %>
       <br>
-      <%= select_tag :asset_type, "<option>Stock</option>".html_safe,
+      <%= select_tag :asset_type, "<option>Stock</option><option>Option</option>".html_safe,
                      class: 'form-control'%>
       <br>
       <%= submit_tag "Complete Transaction", class: "btn btn-primary" %>
