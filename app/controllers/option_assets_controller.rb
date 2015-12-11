@@ -1,4 +1,5 @@
 class OptionAssetsController < ApplicationController
+
   def new
     if !logged_in?
       redirect_to login_path
@@ -14,8 +15,7 @@ class OptionAssetsController < ApplicationController
       @data = yahoo.quotes(params[:symbol], [:last_trade_price])
       stock_symbol = params[:symbol][0]
       @historical_data = yahoo.historical_quotes(stock_symbol, {raw: false, start_date: Date.today - 365, end_date: Date.today})
-      asset_price = @data[0].last_trade_price
-      amount = params[:amount][0]
+      amount = params[:amount][0].to_f
       user_cash = current_user.cash
       transaction_type = params[:asset_type]
 
@@ -24,8 +24,35 @@ class OptionAssetsController < ApplicationController
       treasury_yield = Quandl::Dataset.get('USTREASURY/YIELD').data
       @yield_num = treasury_yield[0]["2_yr"] * 0.01
 
-      #Return to index upon sucess
-      #redirect_to root_path
+      arr = Array.new
+
+      @historical_data.each do |i|
+        arr.push(i.close.to_f)
+      end
+
+      @daily_sd = OptionAssetsHelper.standard_deviation(arr)
+      @daily_sd = @daily_sd / arr[0]
+      strike = params[:strike][0].to_f
+      duration = params[:duration][0].to_f
+
+      # Option::Calculator.price_call( underlying, strike, time, interest, sigma, dividend )
+      if (transaction_type == "Call")
+        @option_cost = Option::Calculator.price_call( @data[0].last_trade_price.to_f, strike, duration, @yield_num, @daily_sd, 0.0 )
+      else
+        @option_cost = Option::Calculator.price_put( @data[0].last_trade_price.to_f, strike, duration, @yield_num, @daily_sd, 0.0 )
+      end
+
+      User.where(:id => current_user.id).update_all(:cash => user_cash.to_f - @option_cost * amount)
+
+      @transaction = Transaction.create(symbol: stock_symbol, cost: @option_cost*amount,
+                                        asset_type: transaction_type, price: @option_cost,
+                                        shares: amount.to_i, user_id: current_user.id)
+
+      @option_asset = OptionAsset.create(symbol: stock_symbol, asset_type: transaction_type,
+                                         spot_price: strike, user_id: current_user.id, number: amount)
+
+      #Return to index upon success
+      redirect_to root_path
 
       #If stock not found, then return error.
     rescue OpenURI::HTTPError
