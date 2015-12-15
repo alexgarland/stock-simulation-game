@@ -33,8 +33,9 @@ class WelcomeController < ApplicationController
         end
         total_value = indiv_value*option.number
         option.value = total_value
-        time_since = Date.now - option.created_at
-        if time_since > option.duration*365
+        option.save
+        time_since = Date.today - option.created_at.to_date
+        if time_since > option.duration.to_f * 365
           User.where(:id => current_user.id).update_all(:cash => current_user.cash + option.value)
           option.asset_type = "Inactive"
         end
